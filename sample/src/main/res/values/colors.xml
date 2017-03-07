@@ -3,6 +3,10 @@
 
     <color name="blue">#303F9F</color>
     <color name="white">#FFFFFF</color>
+    <color name="grey">#363636</color>
+    <color name="green_bs">#5CB85C</color>
+    <color name="yellow_bs">#F0AD4E</color>
+
 
     <color name="accent_color">@color/blue</color>
     <color name="colorPrimary">@color/blue</color>
