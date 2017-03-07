@@ -2,11 +2,13 @@ package com.github.florent37.materialviewpager.sample.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 
@@ -38,5 +40,13 @@ public class ScrollFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView);
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Hi Clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
