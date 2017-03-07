@@ -30,14 +30,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="1000dp"
                     android:orientation="vertical">
-
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
-
         </LinearLayout>
-
-
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
