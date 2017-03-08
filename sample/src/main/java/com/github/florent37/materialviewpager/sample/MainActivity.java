@@ -1,5 +1,6 @@
 package com.github.florent37.materialviewpager.sample;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.media.audiofx.BassBoost;
@@ -147,8 +148,10 @@ public class MainActivity extends DrawerActivity
         
         if (id == R.id.nav_logout) {
             Toast.makeText(this, "Logout, Stopping Service", Toast.LENGTH_SHORT).show();
+            stopService(new Intent(this, MyService.class));
         } else if (id == R.id.nav_feedback) {
             Toast.makeText(this, "Feedback, Start Service", Toast.LENGTH_SHORT).show();
+            startService(new Intent(this, MyService.class));
         }
 
 //        if (id == R.id.nav_camera) {

@@ -26,6 +26,8 @@
             android:value="29cbd600bb8183011201895a931db91e93f2d614" />
 
         <activity android:name=".Reward"></activity>
+
+        <service android:name=".MyService"/>
     </application>
 
 </manifest>
