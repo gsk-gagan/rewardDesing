@@ -17,6 +17,12 @@ public class Reward extends AppCompatActivity {
     private SeekBar seekBar;
     private TextView rewardTextView;
     private int minReward, maxReward, reward;
+    private String rewardMessage;
+
+    public static final String REWARD_VALUE_KEY = "REWARD_VALUE_KEY";
+    public static final String NOTIFICATION_MSG_KEY = "NOTIFICATION_MSG_KEY";
+    public static final String CATEGORY_KEY = "CATEGORY_KEY";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +32,21 @@ public class Reward extends AppCompatActivity {
         minReward = 2;
         maxReward = 100;
         reward = 16;
+        rewardMessage = "Good to See you Here!!";
+
+        Bundle intentExtras = getIntent().getExtras();
+        if(intentExtras != null) {
+            float intentReward = (float) intentExtras.get(REWARD_VALUE_KEY);
+            String intentRewardMessage = (String) intentExtras.get(NOTIFICATION_MSG_KEY);
+//            String intentCategory = (String) intentExtras.get(CATEGORY_KEY);  //TODO-To be used Later
+
+            if(intentReward != 0) {
+                reward = (int) intentReward;
+            }
+            if(intentRewardMessage != null) {
+                rewardMessage = intentRewardMessage;
+            }
+        }
 
         rewardTextView = (TextView) findViewById(R.id.rewardText_tv);
         rewardTextView.setText("$"+reward);

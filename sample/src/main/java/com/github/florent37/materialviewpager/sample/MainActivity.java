@@ -1,5 +1,8 @@
 package com.github.florent37.materialviewpager.sample;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
@@ -11,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -155,6 +159,45 @@ public class MainActivity extends DrawerActivity
         } else if (id == R.id.nav_feedback) {
             Toast.makeText(this, "Feedback, Start Service", Toast.LENGTH_SHORT).show();
             startService(new Intent(this, MyService.class));
+        } else if (id == R.id.nav_social) {
+            Toast.makeText(this, "Creating Notification", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent();
+            PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
+            Notification notif = new Notification.Builder(MainActivity.this)
+                    .setTicker("Ticker Title")
+                    .setContentTitle("Content Title")
+                    .setContentText("Content Text - This is the message")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentIntent(pIntent).getNotification();
+
+            notif.flags = Notification.FLAG_AUTO_CANCEL;
+
+            NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            nm.notify(0, notif);
+
+        } else if (id == R.id.nav_setting) {
+            Toast.makeText(this, "Starting Notification with Activity", Toast.LENGTH_SHORT).show();
+
+
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            Intent notificationIntent = new Intent(this, Reward.class);
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                    notificationIntent, 0);
+
+            Notification notification = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle("Content Title")
+                    .setContentText("Content Text - This is the message")
+                    .setContentIntent(pendingIntent).getNotification();
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+            notificationManager.notify(0, notification);
+
         }
 
 //        if (id == R.id.nav_camera) {

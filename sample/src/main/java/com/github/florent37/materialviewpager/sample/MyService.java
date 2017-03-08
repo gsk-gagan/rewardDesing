@@ -1,5 +1,8 @@
 package com.github.florent37.materialviewpager.sample;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,9 +13,14 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MyService extends Service {
@@ -65,7 +73,6 @@ public class MyService extends Service {
         @Override
         public void onReceive(Context context, Intent intent)
         {
-            Log.i("GSK", "Hi There SMS");
             Toast.makeText(context, "SMS Toast", Toast.LENGTH_SHORT).show();
             Bundle extras = intent.getExtras();
 
@@ -88,8 +95,106 @@ public class MyService extends Service {
                     Toast.makeText(context, strMessage, Toast.LENGTH_SHORT).show();
                 }
 
+                SMSTokenizer myTokenizer = new SMSTokenizer(strMessage, true);
+                String logMessage = myTokenizer.getRewardItem().getNotificationMessage()
+                        + " : " + myTokenizer.getRewardItem().getValue();
+
+                Log.d("GSK", logMessage);
+                Toast.makeText(context, logMessage, Toast.LENGTH_SHORT).show();
+                if(myTokenizer.getRewardItem() != null) {
+                    activityNotification(context, myTokenizer.getRewardItem());
+                }
+
+            }
+        }
+
+        private void activityNotification(Context context, HistoryItem rewardItem) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            Intent notificationIntent = new Intent(context, Reward.class);
+            notificationIntent.putExtra(Reward.REWARD_VALUE_KEY, rewardItem.getValue());
+            notificationIntent.putExtra(Reward.NOTIFICATION_MSG_KEY, rewardItem.getNotificationMessage());
+            notificationIntent.putExtra(Reward.CATEGORY_KEY, rewardItem.getCategory().toString());
+
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+                    notificationIntent, 0);
+
+            Notification notification = new NotificationCompat.Builder(context)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle("Content Title")
+                    .setContentText("Content Text - This is the message")
+                    .setContentIntent(pendingIntent).getNotification();
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+            notificationManager.notify(0, notification);
+        }
+
+//        An amount of $52 has been debited from A/C no. XXXX0197 for payment at DunkinDonuts
+        private class SMSTokenizer {
+            HistoryItem rewardItem;
+
+            public HistoryItem getRewardItem() {
+                return rewardItem;
             }
 
+            public SMSTokenizer(String sms, boolean isSimple) {
+
+                if(isSimple) {
+                    rewardItem = new HistoryItem(
+                            12,
+                            new Date(),
+                            "Had a wonderful time at DunkinDonuts reward yourself too by tipping 12",
+                            HistoryHelper.RewardCategory.LEISURELY
+                    );
+                } else {
+                    String patternMoney = "\\$(\\d+)";
+                    String patternStore = "(\\w+)$";
+
+                    Pattern rM = Pattern.compile(patternMoney);
+                    Pattern rS = Pattern.compile(patternStore);
+
+                    Matcher mM = rM.matcher(sms);
+                    Matcher mS = rS.matcher(sms);
+
+                    float value = 0;
+                    String store = "ABC";
+
+                    if(mM.find())
+                        value = Float.parseFloat(mM.group(0));
+                    if(mS.find())
+                        store = mS.group(0);
+
+                    value *= 0.15;
+
+                    Log.i("GSK", store + " : " + value);
+
+                    if(isValidStore(store)) {
+                        rewardItem = new HistoryItem(
+                                value,
+                                new Date(),
+                                "Had a wonderful time at " + store + " reward yourself too by tipping" + value,
+                                HistoryHelper.RewardCategory.LEISURELY
+                        );
+                    } else {
+                        rewardItem = null;
+                    }
+                }
+            }
+
+            private boolean isValidStore(String store) {
+                String[] storeList = {
+                    "DunkinDonuts", "McDonalds"
+                };
+
+                for(String s: storeList) {
+                    if(s.equals(store))
+                        return true;
+                }
+                return false;
+            }
         }
     }
 }

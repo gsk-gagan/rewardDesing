@@ -44,57 +44,7 @@ public class HistoryHelper {
     }
 
 
-    public class HistoryItem {
-        private float value;
-        private Date timeStamp;
-        private String notificationMessage;
-        private RewardCategory category;
 
-
-        public float getValue() {
-            return value;
-        }
-
-        public Date getTimeStamp() {
-            return timeStamp;
-        }
-
-        public String getNotificationMessage() {
-            return notificationMessage;
-        }
-
-        public RewardCategory getCategory() {
-            return category;
-        }
-
-        public HistoryItem(float value, String timeStamp, String notificationMessage, String category) {
-            this.value = value;
-            try {
-                this.timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm").parse(timeStamp);
-            } catch (ParseException e) {
-                this.timeStamp = new Date();
-            }
-            this.notificationMessage = notificationMessage;
-
-            switch (category) {
-                case "Leisurely":
-                    this.category = RewardCategory.LEISURELY;
-                    break;
-                case "Workout":
-                    this.category = RewardCategory.WORKOUT;
-                    break;
-                case "Work":
-                    this.category = RewardCategory.HARDWORK;
-                    break;
-                case "Appreciation":
-                    this.category = RewardCategory.APPRECIATION;
-                    break;
-                default:
-                    this.category = RewardCategory.OTHER;
-                    break;
-            }
-        }
-    }
 
     public enum RewardCategory {
         LEISURELY("Leisurely Spending"),
@@ -115,3 +65,4 @@ public class HistoryHelper {
         }
     }
 }
+
