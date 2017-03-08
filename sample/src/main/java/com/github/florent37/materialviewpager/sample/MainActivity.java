@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
+import com.github.florent37.materialviewpager.sample.fragment.HomeScrollFragment;
 import com.github.florent37.materialviewpager.sample.fragment.RecyclerViewFragment;
 import com.github.florent37.materialviewpager.sample.fragment.ScrollFragment;
 
@@ -49,12 +50,12 @@ public class MainActivity extends DrawerActivity
             @Override
             public Fragment getItem(int position) {
                 switch (position % 4) {
-                    //case 0:
-                    //    return RecyclerViewFragment.newInstance();
-                    //case 1:
-                    //    return RecyclerViewFragment.newInstance();
-                    //case 2:
-                    //    return WebViewFragment.newInstance();
+                    case 0:
+                        return HomeScrollFragment.newInstance();
+                    case 1:
+                        return ScrollFragment.newInstance();
+                    case 2:
+                        return ScrollFragment.newInstance();
                     default:
                         return ScrollFragment.newInstance();
                 }
@@ -69,13 +70,13 @@ public class MainActivity extends DrawerActivity
             public CharSequence getPageTitle(int position) {
                 switch (position % 4) {
                     case 0:
-                        return "Selection";
+                        return "Home";
                     case 1:
-                        return "Actualités";
+                        return "History";
                     case 2:
-                        return "Professionnel";
+                        return "Portfolio";
                     case 3:
-                        return "Divertissement";
+                        return "Goal";
                 }
                 return "";
             }
@@ -88,7 +89,7 @@ public class MainActivity extends DrawerActivity
                     case 0:
                         return HeaderDesign.fromColorResAndUrl(
                             R.color.green,
-                            "http://phandroid.s3.amazonaws.com/wp-content/uploads/2014/06/android_google_moutain_google_now_1920x1080_wallpaper_Wallpaper-HD_2560x1600_www.paperhi.com_-640x400.jpg");
+                            "http://www.topofandroid.com/wp-content/uploads/2015/05/aZlqiAT.png");
                     case 1:
                         return HeaderDesign.fromColorResAndUrl(
                             R.color.blue,

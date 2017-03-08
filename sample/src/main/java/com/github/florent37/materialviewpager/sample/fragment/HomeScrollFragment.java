@@ -20,18 +20,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ScrollFragment extends Fragment {
+public class HomeScrollFragment extends Fragment {
 
     @BindView(R.id.scrollView)
     NestedScrollView mScrollView;
 
-    public static ScrollFragment newInstance() {
-        return new ScrollFragment();
+    public static HomeScrollFragment newInstance() {
+        return new HomeScrollFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_scroll, container, false);
+        return inflater.inflate(R.layout.fragment_home_scroll, container, false);
     }
 
     @Override
