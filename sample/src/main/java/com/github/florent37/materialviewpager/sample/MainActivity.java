@@ -131,16 +131,25 @@ public class MainActivity extends DrawerActivity
         }
 
 
-        //Background Service
-        MediaPlayer player = MediaPlayer.create(this, Settings.System.DEFAULT_RINGTONE_URI);
-        player.setLooping(true);
-        player.start();
+        //Navigation
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        if (navigationView != null)
+        {
+            navigationView.setNavigationItemSelectedListener(this);
+        }
+
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        
+        if (id == R.id.nav_logout) {
+            Toast.makeText(this, "Logout, Stopping Service", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_feedback) {
+            Toast.makeText(this, "Feedback, Start Service", Toast.LENGTH_SHORT).show();
+        }
 
 //        if (id == R.id.nav_camera) {
 //            // Handle the camera action
