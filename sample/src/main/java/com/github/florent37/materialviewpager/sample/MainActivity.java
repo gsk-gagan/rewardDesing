@@ -1,7 +1,10 @@
 package com.github.florent37.materialviewpager.sample;
 
 import android.content.res.Resources;
+import android.media.MediaPlayer;
+import android.media.audiofx.BassBoost;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -126,6 +129,12 @@ public class MainActivity extends DrawerActivity
                 }
             });
         }
+
+
+        //Background Service
+        MediaPlayer player = MediaPlayer.create(this, Settings.System.DEFAULT_RINGTONE_URI);
+        player.setLooping(true);
+        player.start();
     }
 
     @Override
