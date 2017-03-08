@@ -48,6 +48,9 @@ public class Reward extends AppCompatActivity {
             }
         }
 
+        TextView notificationMessage = (TextView) findViewById(R.id.notificationText_tv);
+        notificationMessage.setText(rewardMessage);
+
         rewardTextView = (TextView) findViewById(R.id.rewardText_tv);
         rewardTextView.setText("$"+reward);
 
