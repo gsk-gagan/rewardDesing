@@ -20,7 +20,7 @@ buildscript {
 }
 
 ext {
-    minSdk = 14
+    minSdk = 15
     sdk = 24
     buildTools = "24.0.2"
     supportVersion = "24.0.0"

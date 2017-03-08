@@ -1,5 +1,6 @@
 package com.github.florent37.materialviewpager.sample;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -82,14 +83,16 @@ public class MainActivity extends DrawerActivity
             }
         });
 
+        final Resources res = getResources();
+
         mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
             @Override
             public HeaderDesign getHeaderDesign(int page) {
                 switch (page) {
                     case 0:
-                        return HeaderDesign.fromColorResAndUrl(
+                        return HeaderDesign.fromColorResAndDrawable(
                             R.color.green,
-                            "http://www.topofandroid.com/wp-content/uploads/2015/05/aZlqiAT.png");
+                            res.getDrawable(R.drawable.nav_menu_back_3));
                     case 1:
                         return HeaderDesign.fromColorResAndUrl(
                             R.color.blue,
