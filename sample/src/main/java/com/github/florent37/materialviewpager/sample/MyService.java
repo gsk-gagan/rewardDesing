@@ -95,15 +95,24 @@ public class MyService extends Service {
                     Toast.makeText(context, strMessage, Toast.LENGTH_SHORT).show();
                 }
 
-                SMSTokenizer myTokenizer = new SMSTokenizer(strMessage, true);
-                String logMessage = myTokenizer.getRewardItem().getNotificationMessage()
-                        + " : " + myTokenizer.getRewardItem().getValue();
+                SMSTokenizer myTokenizer = null;
 
-                Log.d("GSK", logMessage);
-                Toast.makeText(context, logMessage, Toast.LENGTH_SHORT).show();
-                if(myTokenizer.getRewardItem() != null) {
-                    activityNotification(context, myTokenizer.getRewardItem());
+                try {
+                    myTokenizer = new SMSTokenizer(strMessage, false);
+                    String logMessage = myTokenizer.getRewardItem().getNotificationMessage()
+                            + " : " + myTokenizer.getRewardItem().getValue();
+
+                    Log.d("GSK", logMessage);
+                    Toast.makeText(context, logMessage, Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {}
+
+
+                if(myTokenizer != null) {
+                    if(myTokenizer.getRewardItem() != null) {
+                        activityNotification(context, myTokenizer.getRewardItem());
+                    }
                 }
+
 
             }
         }
@@ -124,8 +133,8 @@ public class MyService extends Service {
 
             Notification notification = new NotificationCompat.Builder(context)
                     .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle("Content Title")
-                    .setContentText("Content Text - This is the message")
+                    .setContentTitle("Time to Reward Yourself " + rewardItem.getValue())
+                    .setContentText(rewardItem.getNotificationMessage())
                     .setContentIntent(pendingIntent).getNotification();
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
@@ -163,11 +172,11 @@ public class MyService extends Service {
                     String store = "ABC";
 
                     if(mM.find())
-                        value = Float.parseFloat(mM.group(0));
+                        value = Float.parseFloat(mM.group(0).substring(1));
                     if(mS.find())
                         store = mS.group(0);
 
-                    value *= 0.15;
+                    value *= 0.1;
 
                     Log.i("GSK", store + " : " + value);
 
