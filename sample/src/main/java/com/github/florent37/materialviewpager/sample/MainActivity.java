@@ -3,7 +3,9 @@ package com.github.florent37.materialviewpager.sample;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.media.audiofx.BassBoost;
@@ -40,6 +42,17 @@ import io.fabric.sdk.android.Fabric;
 public class MainActivity extends DrawerActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
+    public static final String MY_PREFERENCE_KEY = "RewardYourselfPreferenceKey";
+    public static final String REWARD_TOTAL_KEY = "RewardTotalKey";
+    public static final String WEEKLY_TOTAL_KEY = "WeeklyTotalKey";
+    public static final String TODAYS_TOTAL_KEY = "TodaysTotalKey";
+    public static final String LAST_VALUE_KEY = "LastValueKey";
+    public static final String LAST_CATEGORY_KEY = "LastCategoryKey";
+    public static final String LAST_MESSAGE_KEY = "LastMessageKey";
+    public static final String LAST_TIME_KEY = "LastTimeKey";
+
+
+
     @BindView(R.id.materialViewPager)
     MaterialViewPager mViewPager;
 
@@ -51,6 +64,7 @@ public class MainActivity extends DrawerActivity
         ButterKnife.bind(this);
 
         Log.i("GSK", "Hi There");
+
 
         final Toolbar toolbar = mViewPager.getToolbar();
         if (toolbar != null) {

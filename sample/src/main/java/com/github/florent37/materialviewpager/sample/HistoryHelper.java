@@ -63,6 +63,14 @@ public class HistoryHelper {
         public String toString() {
             return message;
         }
+
+        public static RewardCategory fromString (String text) {
+            for(RewardCategory cat : RewardCategory.values()) {
+                if(cat.message.equalsIgnoreCase(text))
+                    return cat;
+            }
+            return OTHER;
+        }
     }
 }
 

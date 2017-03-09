@@ -1,5 +1,7 @@
 package com.github.florent37.materialviewpager.sample;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +13,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Reward extends AppCompatActivity {
 
@@ -29,6 +35,7 @@ public class Reward extends AppCompatActivity {
     private ArrayList<ImageView> imageList;
 
     private EditText rewardCategoryET;
+    private HistoryHelper.RewardCategory rewardCategoryEnum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +74,7 @@ public class Reward extends AppCompatActivity {
         maxReward = 100;
         reward = 16;
         rewardMessage = "Good to See you Here!!";
+        rewardCategoryEnum = HistoryHelper.RewardCategory.OTHER;
 
         Bundle intentExtras = getIntent().getExtras();
         if(intentExtras != null) {
@@ -124,6 +132,26 @@ public class Reward extends AppCompatActivity {
                 Button current = (Button) view;
                 if(current == approveButton) {
                     Toast.makeText(Reward.this, "Reward Approved of $" + reward, Toast.LENGTH_SHORT).show();
+
+                    SharedPreferences sp = getSharedPreferences(MainActivity.MY_PREFERENCE_KEY, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    int totalRewardValue = sp.getInt(MainActivity.REWARD_TOTAL_KEY, 663);
+                    int weekTotal = sp.getInt(MainActivity.WEEKLY_TOTAL_KEY, 8);
+                    int todaysTotal = sp.getInt(MainActivity.TODAYS_TOTAL_KEY, 1);
+
+                    editor.putInt(MainActivity.REWARD_TOTAL_KEY, totalRewardValue + reward);
+                    editor.putInt(MainActivity.WEEKLY_TOTAL_KEY, weekTotal + reward);
+                    editor.putInt(MainActivity.TODAYS_TOTAL_KEY, todaysTotal + reward);
+                    editor.putInt(MainActivity.LAST_VALUE_KEY, reward);
+                    editor.putString(MainActivity.LAST_CATEGORY_KEY, rewardCategoryEnum.toString());
+                    editor.putString(MainActivity.LAST_MESSAGE_KEY, rewardMessage);
+
+                    DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+                    Date today = Calendar.getInstance().getTime();
+                    String reportDate = df.format(today);
+                    editor.putString(MainActivity.LAST_TIME_KEY, reportDate);
+                    editor.commit();
+
                 }
                 if(current == denyButton) {
                     Toast.makeText(Reward.this, "Reward Denied", Toast.LENGTH_SHORT).show();
@@ -170,6 +198,19 @@ public class Reward extends AppCompatActivity {
 
     private void imageViewAlphaHelper(ArrayList<ImageView> imageList, ImageView imageSelected) {
         for(ImageView image : imageList) {
+//            movieIV, gymIV, officeIV, thumbsupIV, walletIV
+            if(imageSelected == movieIV) {
+                rewardCategoryEnum = HistoryHelper.RewardCategory.LEISURELY;
+            } else if (imageSelected == gymIV) {
+                rewardCategoryEnum = HistoryHelper.RewardCategory.WORKOUT;
+            } else if (imageSelected == officeIV) {
+                rewardCategoryEnum = HistoryHelper.RewardCategory.HARDWORK;
+            } else if (imageSelected == thumbsupIV) {
+                rewardCategoryEnum = HistoryHelper.RewardCategory.APPRECIATION;
+            } else {
+                rewardCategoryEnum = HistoryHelper.RewardCategory.OTHER;
+            }
+
             if(image == imageSelected) {
                 image.setAlpha(1.0f);
             } else {
